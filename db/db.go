@@ -56,7 +56,6 @@ func (d *DB_info) DB_moniter() error {
 		if err != nil {
 			return err
 		}
-		defer rows.Close()
 
 		for rows.Next() {
 			var id int
@@ -70,5 +69,11 @@ func (d *DB_info) DB_moniter() error {
 			log.Printf("name: %s, age: %d\n", name, age)
 			time.Sleep(time.Second)
 		}
+
+		if err := rows.Err(); err != nil {
+			return err
+		}
+
+		rows.Close()
 	}
 }

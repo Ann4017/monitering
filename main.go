@@ -21,10 +21,10 @@ func main() {
 	}
 
 	//mysql 연동
-	err = db_con.DB_con()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// err = db_con.DB_con()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	err = db_con.DB_moniter()
 	if err != nil {

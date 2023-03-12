@@ -2,7 +2,7 @@ package db
 
 import (
 	"database/sql"
-	"fmt"
+	"log"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -52,20 +52,23 @@ func (d *DB_info) DB_moniter() error {
 	defer db.Close()
 
 	for {
-		rows, err := db.Query("select * from info")
+		rows, err := db.Query("select * from info where id <= 2")
 		if err != nil {
-			continue
+			return err
 		}
 		defer rows.Close()
 
-		var count int
+		for rows.Next() {
+			var id int
+			var name string
+			var age int
 
-		if rows.Next() {
-			if err := rows.Scan(&count); err != nil {
-				continue
+			if err := rows.Scan(&id, &name, &age); err != nil {
+				return err
 			}
+
+			log.Printf("name: %s, age: %d\n", name, age)
+			time.Sleep(time.Second)
 		}
-		fmt.Printf("count: %d\n", count)
-		time.Sleep(time.Minute)
 	}
 }

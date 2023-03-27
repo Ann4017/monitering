@@ -18,7 +18,7 @@ type DB_info struct {
 	s_engine   string
 }
 
-func (d *DB_info) DB_cfg() error {
+func (d *DB_info) Cfg() error {
 	file, err := ini.Load("config/config.ini")
 	if err != nil {
 		return err
@@ -33,7 +33,7 @@ func (d *DB_info) DB_cfg() error {
 	return nil
 }
 
-func (d *DB_info) DB_con() error {
+func (d *DB_info) Con() error {
 	db_source := d.s_user + ":" + d.s_pwd + "@tcp(" + d.s_host + ":" + d.s_port + ")/" + d.s_database
 	db, err := sql.Open(d.s_engine, db_source)
 	if err != nil {
@@ -43,7 +43,7 @@ func (d *DB_info) DB_con() error {
 	return nil
 }
 
-func (d *DB_info) DB_moniter() error {
+func (d *DB_info) Moniter() error {
 	db_source := d.s_user + ":" + d.s_pwd + "@tcp(" + d.s_host + ":" + d.s_port + ")/" + d.s_database
 	db, err := sql.Open(d.s_engine, db_source)
 	if err != nil {
@@ -52,7 +52,7 @@ func (d *DB_info) DB_moniter() error {
 	defer db.Close()
 
 	for {
-		rows, err := db.Query("select * from info where id <= 2")
+		rows, err := db.Query("select * from info")
 		if err != nil {
 			return err
 		}

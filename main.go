@@ -4,8 +4,10 @@ import (
 	// "log"
 	// con "monitering/config"
 	// "monitering/db"
-	"log"
-	"monitering/http"
+
+	"fmt"
+	"monitering/hw"
+	"time"
 )
 
 func main() {
@@ -33,9 +35,30 @@ func main() {
 	// 	log.Fatal(err)
 	// }
 
-	err := http.Get_https_cert()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// err := http.Get_https_cert("google.com")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
+	for {
+		go func() {
+			_, err := hw.Get_cpu_total_usage()
+			if err != nil {
+				fmt.Println(err)
+			}
+		}()
+		go func() {
+			_, err := hw.Get_cpu_core_usage()
+			if err != nil {
+				fmt.Println(err)
+			}
+		}()
+		// go func() {
+		// 	_, err := hw.Get_cpu_temps()
+		// 	if err != nil {
+		// 		fmt.Println(err)
+		// 	}
+		// }()
+		time.Sleep(time.Second * 5)
+	}
 }

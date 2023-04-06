@@ -36,8 +36,8 @@ func Check_http_ping(url string) error {
 	return nil
 }
 
-func Get_https_cert() error {
-	conn, err := tls.Dial("tcp", "google.com:443", nil)
+func Get_https_cert(url string) error {
+	conn, err := tls.Dial("tcp", url+":443", nil)
 	if err != nil {
 		return err
 	}

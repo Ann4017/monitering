@@ -5,7 +5,6 @@ import (
 	// con "monitering/config"
 	// "monitering/db"
 
-	"fmt"
 	"monitering/hw"
 	"time"
 )
@@ -41,24 +40,33 @@ func main() {
 	// }
 
 	for {
-		go func() {
-			_, err := hw.Get_cpu_total_usage()
-			if err != nil {
-				fmt.Println(err)
-			}
-		}()
-		go func() {
-			_, err := hw.Get_cpu_core_usage()
-			if err != nil {
-				fmt.Println(err)
-			}
-		}()
+		// go func() {
+		// 	_, err := hw.Get_cpu_model()
+		// 	if err != nil {
+		// 		fmt.Println(err)
+		// 	}
+		// }()
+		// go func() {
+		// 	_, err := hw.Get_cpu_total_usage()
+		// 	if err != nil {
+		// 		fmt.Println(err)
+		// 	}
+		// }()
+		// go func() {
+		// 	_, err := hw.Get_cpu_core_usage()
+		// 	if err != nil {
+		// 		fmt.Println(err)
+		// 	}
+		// }()
 		// go func() {
 		// 	_, err := hw.Get_cpu_temps()
 		// 	if err != nil {
 		// 		fmt.Println(err)
 		// 	}
 		// }()
+		hw.Get_mem_info()
+		hw.Get_disk_info()
 		time.Sleep(time.Second * 5)
+		// }
 	}
 }

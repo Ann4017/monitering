@@ -2,23 +2,24 @@ package http
 
 import (
 	"crypto/tls"
+	"crypto/x509"
 	"fmt"
 	"net/http"
 	"time"
 )
 
-func Get_http_status(url string) error {
+func Get_http_status(url string) (int, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	defer resp.Body.Close()
 
 	fmt.Println("status:", resp.StatusCode)
-	return nil
+	return resp.StatusCode, nil
 }
 
-func Check_http_ping(url string) error {
+func Get_http_ping(url string) (time.Duration, error) {
 	client := http.Client{
 		Timeout: time.Second * 10,
 	}
@@ -26,20 +27,20 @@ func Check_http_ping(url string) error {
 
 	resp, err := client.Head(url)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	defer resp.Body.Close()
 
 	elapsed := time.Since(start)
 
 	fmt.Println("elapsed time:", elapsed)
-	return nil
+	return elapsed, nil
 }
 
-func Get_https_cert(url string) error {
+func Get_https_cert(url string) ([]*x509.Certificate, error) {
 	conn, err := tls.Dial("tcp", url+":443", nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer conn.Close()
 
@@ -47,5 +48,5 @@ func Get_https_cert(url string) error {
 	for _, cert := range certs {
 		fmt.Println("Expiration date:", cert.NotAfter.Format(time.RFC3339))
 	}
-	return nil
+	return certs, nil
 }

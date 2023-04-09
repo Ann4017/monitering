@@ -6,7 +6,7 @@ import (
 	// "monitering/db"
 
 	"fmt"
-	"monitering/hw"
+	"monitering/http"
 	"time"
 )
 
@@ -35,48 +35,68 @@ func main() {
 	// 	log.Fatal(err)
 	// }
 
-	// err := http.Get_https_cert("google.com")
-	// if err != nil {
-	// 	log.Fatal(err)
+	// for {
+	// 	go func() {
+	// 		_, err := hw.Get_cpu_model()
+	// 		if err != nil {
+	// 			fmt.Println(err)
+	// 		}
+	// 	}()
+	// 	go func() {
+	// 		_, err := hw.Get_cpu_total_usage()
+	// 		if err != nil {
+	// 			fmt.Println(err)
+	// 		}
+	// 	}()
+	// 	go func() {
+	// 		_, err := hw.Get_cpu_core_usage()
+	// 		if err != nil {
+	// 			fmt.Println(err)
+	// 		}
+	// 	}()
+	// go func() {
+	// 	_, err := hw.Get_cpu_temps()
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 	}
+	// }()
+	// 	go func() {
+	// 		_, err := hw.Get_mem_info()
+	// 		if err != nil {
+	// 			fmt.Println(err)
+	// 		}
+	// 	}()
+	// 	go func() {
+	// 		_, err := hw.Get_disk_info()
+	// 		if err != nil {
+	// 			fmt.Println(err)
+	// 		}
+	// 	}()
+	// 	time.Sleep(time.Second * 5)
 	// }
 
 	for {
-		go func() {
-			_, err := hw.Get_cpu_model()
-			if err != nil {
-				fmt.Println(err)
-			}
-		}()
-		go func() {
-			_, err := hw.Get_cpu_total_usage()
-			if err != nil {
-				fmt.Println(err)
-			}
-		}()
-		go func() {
-			_, err := hw.Get_cpu_core_usage()
-			if err != nil {
-				fmt.Println(err)
-			}
-		}()
-		// go func() {
-		// 	_, err := hw.Get_cpu_temps()
-		// 	if err != nil {
-		// 		fmt.Println(err)
-		// 	}
-		// }()
-		go func() {
-			_, err := hw.Get_mem_info()
-			if err != nil {
-				fmt.Println(err)
-			}
-		}()
-		go func() {
-			_, err := hw.Get_disk_info()
-			if err != nil {
-				fmt.Println(err)
-			}
-		}()
+		status, err := http.Get_http_status("https://www.naver.com/")
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(status)
+
+		ping, err := http.Get_http_ping("https://www.naver.com/")
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(ping)
+
+		certs, err := http.Get_https_cert("naver.com")
+		if err != nil {
+			fmt.Println(err)
+		}
+		for _, cert := range certs {
+			fmt.Printf("Expiration date: %s\n", cert.NotAfter.Format(time.RFC3339))
+		}
+
 		time.Sleep(time.Second * 5)
 	}
+
 }

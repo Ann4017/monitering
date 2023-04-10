@@ -1,14 +1,8 @@
 package main
 
-import (
-	// "log"
-	// con "monitering/config"
-	// "monitering/db"
-
-	"fmt"
-	"monitering/http"
-	"time"
-)
+// "log"
+// con "monitering/config"
+// "monitering/db"
 
 func main() {
 	// //ini 존재 유무 확인 및 생성
@@ -75,28 +69,28 @@ func main() {
 	// 	time.Sleep(time.Second * 5)
 	// }
 
-	for {
-		status, err := http.Get_http_status("https://www.naver.com/")
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(status)
+	// for {
+	// 	status, err := http.Get_http_status("https://www.naver.com/")
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 	}
+	// 	fmt.Println(status)
 
-		ping, err := http.Get_http_ping("https://www.naver.com/")
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(ping)
+	// 	ping, err := http.Get_http_ping("https://www.naver.com/")
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 	}
+	// 	fmt.Println(ping)
 
-		certs, err := http.Get_https_cert("naver.com")
-		if err != nil {
-			fmt.Println(err)
-		}
-		for _, cert := range certs {
-			fmt.Printf("Expiration date: %s\n", cert.NotAfter.Format(time.RFC3339))
-		}
+	// 	certs, err := http.Get_https_cert("naver.com")
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 	}
+	// 	for _, cert := range certs {
+	// 		fmt.Printf("Expiration date: %s\n", cert.NotAfter.Format(time.RFC3339))
+	// 	}
 
-		time.Sleep(time.Second * 5)
-	}
+	// 	time.Sleep(time.Second * 5)
+	// }
 
 }

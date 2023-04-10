@@ -1,96 +1,49 @@
 package main
 
-// "log"
-// con "monitering/config"
-// "monitering/db"
+import (
+	"fmt"
+	"log"
+	"monitering/hw"
+	"time"
+)
+
+type hw_info struct {
+	c hw.CPU_info
+	m hw.MEM_cap
+	d hw.DISK_cap
+}
 
 func main() {
-	// //ini 존재 유무 확인 및 생성
-	// err := con.Check_ini("config/config.ini")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	hw := &hw_info{}
+	go func() {
+		for {
+			cpu_m, err := hw.c.Get_cpu_model()
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("cpu model: %s\n", cpu_m)
+			fmt.Printf("cpu model: %s\n", hw.c.S_cpu_model)
 
-	// //database 구성
-	// db_con := &db.DB_info{}
-	// err = db_con.Cfg()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+			cpu_t_usage, err := hw.c.Get_cpu_total_usage()
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("cpu total usage: %.2f%%\n", cpu_t_usage[0])
+			fmt.Printf("cpu total usage: %.2f%%\n", hw.c.F_cpu_t_usage[0])
 
-	// //mysql 연동
-	// // err = db_con.DB_con()
-	// // if err != nil {
-	// // 	log.Fatal(err)
-	// // }
+			cpu_c_usage, err := hw.c.Get_cpu_core_usage()
+			if err != nil {
+				log.Fatal(err)
+			}
+			for i, usage := range cpu_c_usage {
+				fmt.Printf("core #%d usage: %.2f%%\n", i, usage)
+			}
+			for i, usage := range hw.c.F_cpu_c_usage {
+				fmt.Printf("core #%d usage: %.2f%%\n", i, usage)
+			}
 
-	// err = db_con.Moniter()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// for {
-	// 	go func() {
-	// 		_, err := hw.Get_cpu_model()
-	// 		if err != nil {
-	// 			fmt.Println(err)
-	// 		}
-	// 	}()
-	// 	go func() {
-	// 		_, err := hw.Get_cpu_total_usage()
-	// 		if err != nil {
-	// 			fmt.Println(err)
-	// 		}
-	// 	}()
-	// 	go func() {
-	// 		_, err := hw.Get_cpu_core_usage()
-	// 		if err != nil {
-	// 			fmt.Println(err)
-	// 		}
-	// 	}()
-	// go func() {
-	// 	_, err := hw.Get_cpu_temps()
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// }()
-	// 	go func() {
-	// 		_, err := hw.Get_mem_info()
-	// 		if err != nil {
-	// 			fmt.Println(err)
-	// 		}
-	// 	}()
-	// 	go func() {
-	// 		_, err := hw.Get_disk_info()
-	// 		if err != nil {
-	// 			fmt.Println(err)
-	// 		}
-	// 	}()
-	// 	time.Sleep(time.Second * 5)
-	// }
-
-	// for {
-	// 	status, err := http.Get_http_status("https://www.naver.com/")
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// 	fmt.Println(status)
-
-	// 	ping, err := http.Get_http_ping("https://www.naver.com/")
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// 	fmt.Println(ping)
-
-	// 	certs, err := http.Get_https_cert("naver.com")
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// 	for _, cert := range certs {
-	// 		fmt.Printf("Expiration date: %s\n", cert.NotAfter.Format(time.RFC3339))
-	// 	}
-
-	// 	time.Sleep(time.Second * 5)
-	// }
-
+			time.Sleep(time.Second * 5)
+		}
+	}()
+	select {}
 }
